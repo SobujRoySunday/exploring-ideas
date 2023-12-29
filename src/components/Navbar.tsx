@@ -8,7 +8,7 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li className="btn btn-primary"><Link href='/signin'>Sign in</Link></li>
+          <li className="btn btn-secondary"><Link href='/signin'>Sign in</Link></li>
           {/* <li>
             <details>
               <summary>
