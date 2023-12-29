@@ -42,15 +42,11 @@ export async function POST(request: NextRequest) {
     const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY!, { expiresIn: "1d" })
 
     // create the response
-    const response = NextResponse.json({
+    return NextResponse.json({
       message: 'Login successful',
       success: true,
       token
     })
-    response.cookies.set('authToken', token, { expires: Date.now() + (24 * 60 * 60 * 1000), httpOnly: true, path: '/' })
-
-    // finally returning the response
-    return response;
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

@@ -1,6 +1,9 @@
+import { getSession } from "@/helpers/getSession"
 import Link from "next/link"
+import Logout from "./Logout"
 
 const Navbar = () => {
+  const session = getSession()
   return (
     <div><div className="navbar bg-base-100 shadow-md">
       <div className="flex-1">
@@ -8,7 +11,8 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li className="btn btn-secondary"><Link href='/signin'>Sign in</Link></li>
+          {session ? <Logout /> : <li className="btn btn-secondary"><Link href='/signin'>Sign in</Link></li>}
+
           {/* <li>
             <details>
               <summary>

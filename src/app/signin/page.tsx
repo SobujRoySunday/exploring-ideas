@@ -4,6 +4,7 @@ import React from 'react'
 import jwt from 'jsonwebtoken'
 import { UserRoles } from '@prisma/client'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 
 type jwtAuthTokenPayload = {
   id: string,
@@ -25,7 +26,9 @@ export default function Signin() {
       throw new Error(`Couldn't login`)
     }
 
+    cookies().set('authToken', response.data.token, { expires: Date.now() + (24 * 60 * 60 * 1000), httpOnly: true, path: '/' })
     const activeUserDetails: jwtAuthTokenPayload = jwt.verify(response.data.token, process.env.TOKEN_SECRET_KEY!) as jwtAuthTokenPayload
+
     if (activeUserDetails.role === UserRoles.STUDENT)
       redirect('/student')
     else if (activeUserDetails.role === UserRoles.EDUCATOR)
