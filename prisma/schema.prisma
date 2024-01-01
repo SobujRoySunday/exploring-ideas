@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Users Models
 enum UserRoles {
   ADMIN
   EDUCATOR
@@ -30,4 +31,41 @@ model Users {
   verifyTokenExpiry         Int    @default(0)
 
   @@map("users")
+}
+
+// Content Model
+model Modules {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  moduleName  String     @unique
+  isCreatedAt DateTime   @default(now())
+  isUpdatedAt DateTime   @updatedAt
+  Chapters    Chapters[]
+
+  @@map("modules")
+}
+
+model Chapters {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  chapterName String
+  moduleId    String   @db.ObjectId
+  isCreatedAt DateTime @default(now())
+  isUpdatedAt DateTime @updatedAt
+  Videos      Videos[]
+
+  moduleRelation Modules @relation(fields: [moduleId], references: [id])
+
+  @@map("chapters")
+}
+
+model Videos {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  videoName   String
+  chapterId   String   @db.ObjectId
+  pptFile     String
+  isCreatedAt DateTime @default(now())
+  isUpdatedAt DateTime @updatedAt
+
+  chapterRelation Chapters @relation(fields: [chapterId], references: [id])
+
+  @@map("videos")
 }

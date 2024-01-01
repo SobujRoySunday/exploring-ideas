@@ -7,11 +7,11 @@ const Navbar = () => {
   return (
     <div><div className="navbar bg-base-100 shadow-md">
       <div className="flex-1">
-        <Link href='/' className="btn btn-ghost text-xl">TINT Academy</Link>
+        <Link href='/' className="btn btn-ghost text-xl">Exploring Ideas</Link>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          {session ? <Logout /> : <li className="btn btn-secondary"><Link href='/signin'>Sign in</Link></li>}
+          {session ? <Logout /> : <Link className="btn btn-secondary" href='/signin'>Sign in</Link>}
 
           {/* <li>
             <details>
