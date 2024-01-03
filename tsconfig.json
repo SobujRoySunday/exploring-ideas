@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/helpers/videoStreamMerger.js"
+    "src/helpers/videoStreamMerger.js",
+    "src/app/api/live/filesave/route.ts"
   ],
   "exclude": ["node_modules"]
 }

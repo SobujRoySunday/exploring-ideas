@@ -1,26 +1,30 @@
 import { convertDateTime } from '@/helpers/convertDateTime'
 import { prisma } from '@/lib/db/prisma'
 import Link from 'next/link'
+import React from 'react'
 
-const Educator = async () => {
-  const fetchModuleData = async () => {
+const Modules = async ({ params }: {
+  params: { moduleToken: string }
+}) => {
+  const fetchChapterData = async () => {
     "use server"
-    const response = await prisma.modules.findMany();
-    return response;
+    const response = await prisma.chapters.findMany({
+      where: {
+        moduleId: params.moduleToken
+      }
+    })
+    return response
   }
 
-  const datas = await fetchModuleData()
+  const datas = await fetchChapterData()
 
   return (
-    <div className='flex flex-col justify-center items-center gap-10 my-10'>
-      <div>
-        <Link className="btn btn-error" href='/educator/golive'>Go Live</Link>
-      </div>
-      <div className="overflow-x-auto h-[51.5vh]">
+    <div className='flex flex-col justify-center items-center w-full py-20'>
+      <div className="overflow-x-auto h-[52.3vh]">
         <table className="table table-zebra w-[60vw]">
           <thead>
             <tr className='bg-secondary text-white'>
-              <th>Module Name</th>
+              <th>Chapter Name</th>
               <th>Created</th>
             </tr>
           </thead>
@@ -29,7 +33,7 @@ const Educator = async () => {
               datas.map((data) => {
                 return (
                   <tr key={data.id}>
-                    <td><Link href={`/educator/chapters/${data.id}`}>{data.moduleName}</Link></td>
+                    <td><Link href={`/educator/videos/${data.id}`}>{data.chapterName}</Link></td>
                     <td>{convertDateTime(data.isCreatedAt.toString())}</td>
                   </tr>
                 )
@@ -43,4 +47,4 @@ const Educator = async () => {
   )
 }
 
-export default Educator
+export default Modules
