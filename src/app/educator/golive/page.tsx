@@ -1,6 +1,7 @@
 "use client"
 
 import { convertToBase64 } from "@/helpers/convertToBase64"
+import { prisma } from "@/lib/db/prisma"
 import axios from "axios"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -21,18 +22,34 @@ const GoLive = () => {
       setLoading(true)
       let moduleId, chapterId;
 
-      if (newModule && module && newChapter && chapter) {
-        const moduleResponse = await axios.post(`/api/live/module`, { module })
-        if (moduleResponse) {
-          moduleId = moduleResponse.data.createdModule.id;
-          const chapterResponse = await axios.post(`/api/live/chapter`, { chapter, moduleId });
-          if (chapterResponse) {
-            chapterId = chapterResponse.data.createdChapter.id;
+      // Setting the new module name if user has not given any module input
+      if (newModule && !module) {
+        const moduleCountResponse = await axios.get('/api/utils/getModuleCount')
+        console.log(`${moduleCountResponse.data.count + 1}`)
+        setModule(`Modules #${moduleCountResponse.data.count + 1}`)
+      }
+
+      if (newModule && newChapter && !chapter) {
+        setChapter(`Chapter #1`)
+      }
+
+      if (newModule) {
+        const moduleCreateResponse = await axios.post(`/api/live/moduleCreate`, { module })
+        if (moduleCreateResponse) {
+          moduleId = moduleCreateResponse.data.createdModule.id;
+          const chapterCreateResponse = await axios.post(`/api/live/chapter`, { chapter, moduleId });
+          if (chapterCreateResponse) {
+            chapterId = chapterCreateResponse.data.createdChapter.id;
           }
         }
       }
 
-      const fileBase64 = await convertToBase64(file as File)
+      let fileBase64;
+      if (file) {
+        fileBase64 = await convertToBase64(file as File)
+      } else {
+        fileBase64 = ""
+      }
       const response = await axios.post(`/api/live/create`, { video, chapterId, fileBase64 })
       const liveToken = response.data.createdVideoLog.id
       router.push(`/educator/golive/${liveToken}`)

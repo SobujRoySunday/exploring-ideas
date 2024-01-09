@@ -16,7 +16,7 @@ const Educator = async () => {
       <div>
         <Link className="btn btn-error" href='/educator/golive'>Go Live</Link>
       </div>
-      <div className="overflow-x-auto h-[51.5vh]">
+      <div className="overflow-x-auto overflow-y-auto h-[51.5vh]">
         <table className="table table-zebra w-[60vw]">
           <thead>
             <tr className='bg-secondary text-white'>

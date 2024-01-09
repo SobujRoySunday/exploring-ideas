@@ -1,6 +1,7 @@
 import { convertDateTime } from "@/helpers/convertDateTime"
 import { prisma } from "@/lib/db/prisma"
 import Link from "next/link"
+import NewVideo from "./NewVideo"
 
 const Videos = async ({ params }: {
   params: { chapterToken: string }
@@ -18,7 +19,8 @@ const Videos = async ({ params }: {
   const datas = await fetchVideoDatas()
 
   return (
-    <div className="flex flex-col justify-center items-center w-full py-20">
+    <div className="flex flex-col justify-center items-center w-full py-20 gap-5">
+      <NewVideo chapterId={params.chapterToken} />
       <div className="overflow-x-auto h-[52.3vh]">
         <table className="table table-zebra w-[60vw]">
           <thead>
