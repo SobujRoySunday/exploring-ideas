@@ -146,7 +146,10 @@ const GoLive = () => {
             <input
               type="file"
               className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-              onChange={(e) => { setFile(e.target.files[0]) }}
+              onChange={(e) => {
+                if (e.target.files)
+                  setFile(e.target.files[0]);
+              }}
               accept=".pdf"
             />
           </div>
