@@ -1,63 +1,86 @@
+"use client"
+
 import axios from 'axios'
 import Link from 'next/link'
-import React from 'react'
-import jwt from 'jsonwebtoken'
-import { UserRoles } from '@prisma/client'
-import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
-
-type jwtAuthTokenPayload = {
-  id: string,
-  name: string,
-  role: UserRoles,
-  iat: number,
-  exp: number
-}
+import React, { FormEvent, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signin() {
-  const login = async (formData: FormData) => {
-    "use server"
+  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false)
 
-    const email = formData.get("email")
-    const password = formData.get("password")
+  const login = async (e: FormEvent) => {
+    e.preventDefault()
 
-    const response = await axios.post(`${process.env.DOMAIN}/api/users/login`, { email, password })
-    if (!response) {
-      throw new Error(`Couldn't login`)
+    try {
+
+      setLoading(true);
+      await axios.post(`/api/users/login`, { email, password });
+      router.push('/')
+
+    } catch (error: any) {
+
+      if (error.response) {
+        toast.error(error.response.data);
+      } else if (error.request) {
+        console.log(error.request);
+        toast.error(error.request);
+      } else {
+        console.log('Error', error.message);
+        toast.error(`Error ${error.message}`);
+      }
+
     }
-
-    cookies().set('authToken', response.data.token, { expires: Date.now() + (24 * 60 * 60 * 1000), httpOnly: true, path: '/' })
-    const activeUserDetails: jwtAuthTokenPayload = jwt.verify(response.data.token, process.env.TOKEN_SECRET_KEY!) as jwtAuthTokenPayload
-
-    if (activeUserDetails.role === UserRoles.STUDENT)
-      redirect('/student')
-    else if (activeUserDetails.role === UserRoles.EDUCATOR)
-      redirect('/educator')
-    else if (activeUserDetails.role === UserRoles.ADMIN)
-      redirect('/admin')
+    finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className='flex justify-center py-64'>
+      <ToastContainer />
       <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <form className="card-body" action={login}>
+        <form onSubmit={login} className="card-body">
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
             </label>
-            <input name='email' type="email" placeholder="email" className="input input-bordered" required />
+            <input
+              type="email"
+              placeholder="email"
+              className="input input-bordered"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value) }}
+              required
+            />
           </div>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
-            <input name='password' type="password" placeholder="password" className="input input-bordered" required />
+            <input
+              type="password"
+              placeholder="password"
+              className="input input-bordered"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value) }}
+              required
+            />
             <label className="label">
               <Link href="/forgotPassword" className="label-text-alt link link-hover">Forgot password?</Link>
             </label>
           </div>
           <div className="form-control mt-6">
-            <button type='submit' className="btn btn-primary">Login</button>
+            <button type='submit' className="btn btn-primary">
+              Login
+              {
+                loading && <span className="loading loading-spinner loading-sm"></span>
+              }
+            </button>
           </div>
           <label className="label justify-center">
             <Link href="/signup" className="label-text-alt link link-hover">Create new account</Link>
