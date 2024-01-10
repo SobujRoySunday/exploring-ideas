@@ -7,20 +7,6 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json()
     const { name, email, password, retypePassword, role } = reqBody
 
-    // Check if fields are not empty
-    if (name.length === 0) {
-      return NextResponse.json(`Name can't be empty`, { status: 400 })
-    }
-    if (email.length === 0) {
-      return NextResponse.json(`Email can't be empty`, { status: 400 })
-    }
-    if (password.length === 0) {
-      return NextResponse.json(`Password can't be empty`, { status: 400 })
-    }
-    if (retypePassword.length === 0) {
-      return NextResponse.json(`Please retype your password`, { status: 400 })
-    }
-
     // Checking if the user already exist
     const user = await prisma.users.findUnique({
       where: {

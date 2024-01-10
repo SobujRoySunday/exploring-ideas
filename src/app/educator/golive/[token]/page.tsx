@@ -64,7 +64,7 @@ const Live = ({ params }: {
         try {
           const data = new FormData()
           data.append("file", blobRes)
-          const response = await axios.post('http://localhost:4000/uploadfile', data, config);
+          const response = await axios.post('https://meowing-abounding-skateboard.glitch.me:4000/uploadfile', data, config);
         } catch (error: any) {
           console.log(error)
         }

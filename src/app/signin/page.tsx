@@ -70,9 +70,6 @@ export default function Signin() {
               onChange={(e) => { setPassword(e.target.value) }}
               required
             />
-            <label className="label">
-              <Link href="/forgotPassword" className="label-text-alt link link-hover">Forgot password?</Link>
-            </label>
           </div>
           <div className="form-control mt-6">
             <button type='submit' className="btn btn-primary">
