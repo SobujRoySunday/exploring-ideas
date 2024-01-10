@@ -4,6 +4,8 @@ import { setScreenStreamObject, setWebcamStreamObject } from "@/helpers/setStrea
 import { mediaMerge } from "@/helpers/videoStreamMerger"
 import axios from "axios"
 import { useState, useRef, useEffect } from "react"
+import Interactivity from "./Interactivity"
+import { useRouter } from "next/navigation"
 
 const Live = ({ params }: {
   params: { token: string }
@@ -15,6 +17,7 @@ const Live = ({ params }: {
     },
   };
 
+  const router = useRouter()
 
   const [webcam, setWebcam] = useState(true)
   const [screen, setScreen] = useState(true)
@@ -65,12 +68,10 @@ const Live = ({ params }: {
         } catch (error: any) {
           console.log(error)
         }
-        // const a = document.createElement("a");
-        // a.href = url;
-        // a.download = `${params.token}.webm`;
-        // a.click();
 
         recordedChunks.current = [];
+
+        router.push('/educator');
       };
 
       mediaRecorder.current.start();
@@ -165,6 +166,10 @@ const Live = ({ params }: {
           {
             live && <button className="btn btn-error" onClick={stopRecording}>Stop</button>
           }
+        </div>
+
+        <div>
+          <Interactivity videoId={params.token} />
         </div>
       </div>
     </>

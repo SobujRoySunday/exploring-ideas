@@ -1,14 +1,33 @@
 "use client";
 
-import Link from 'next/link';
+import { convertToBase64 } from '@/helpers/convertToBase64';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const NewVideo = ({ chapterId }: { chapterId: string }) => {
+  const router = useRouter();
   const [video, setVideo] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleClick = () => {
-    console.log()
+  const handleClick = async () => {
+    try {
+      setLoading(true);
+      let fileBase64;
+      if (file) {
+        fileBase64 = await convertToBase64(file as File)
+      } else {
+        fileBase64 = ""
+      }
+      const response = await axios.post(`/api/live/create`, { video, chapterId, fileBase64 })
+      const liveToken = response.data.createdVideoLog.id
+      router.push(`/educator/golive/${liveToken}`)
+    } catch (error: any) {
+
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -22,7 +41,7 @@ const NewVideo = ({ chapterId }: { chapterId: string }) => {
           </label>
           <input
             type="text"
-            placeholder="chapter name"
+            placeholder="eg. Vercel Deployment"
             className="input input-bordered"
             value={video}
             onChange={(e) => { setVideo(e.target.value) }}
@@ -47,7 +66,12 @@ const NewVideo = ({ chapterId }: { chapterId: string }) => {
 
         {/* Submit */}
         <div className="form-control mt-6">
-          <button onClick={handleClick} className="btn btn-primary">Go live</button>
+          <button onClick={handleClick} className="btn btn-primary">
+            {
+              loading && <span className="loading loading-spinner loading-sm"></span>
+            }
+            Go live
+          </button>
         </div>
       </div>
     </div>

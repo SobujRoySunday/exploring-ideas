@@ -1,6 +1,7 @@
 import { convertDateTime } from '@/helpers/convertDateTime'
 import { prisma } from '@/lib/db/prisma'
 import Link from 'next/link'
+import NewModule from './NewModule'
 
 const Educator = async () => {
   const fetchModuleData = async () => {
@@ -16,6 +17,7 @@ const Educator = async () => {
       <div>
         <Link className="btn btn-error" href='/educator/golive'>Go Live</Link>
       </div>
+      <NewModule />
       <div className="overflow-x-auto overflow-y-auto h-[51.5vh]">
         <table className="table table-zebra w-[60vw]">
           <thead>
