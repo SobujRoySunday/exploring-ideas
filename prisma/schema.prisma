@@ -34,6 +34,11 @@ model Users {
 }
 
 // Content Model
+enum PoleAnswer {
+  YES
+  NO
+}
+
 model Modules {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   moduleName  String     @unique
@@ -66,6 +71,16 @@ model Videos {
   isUpdatedAt DateTime @updatedAt
 
   chapterRelation Chapters @relation(fields: [chapterId], references: [id])
+  Polls           Polls[]
 
   @@map("videos")
+}
+
+model Polls {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  statement     String
+  answer        PoleAnswer
+  videoId       String     @db.ObjectId
+  videoRelation Videos     @relation(fields: [videoId], references: [id])
+  timestamp     Int
 }
