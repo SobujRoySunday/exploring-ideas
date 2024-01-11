@@ -6,6 +6,8 @@ import React, { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getUserRole } from '@/helpers/getUserRole'
+import { UserRoles } from '@prisma/client'
 
 export default function Signin() {
   const router = useRouter()
@@ -19,9 +21,16 @@ export default function Signin() {
     try {
 
       setLoading(true);
-      await axios.post(`/api/users/login`, { email, password });
-      router.push('/')
-
+      const response = await axios.post(`/api/users/login`, { email, password });
+      const token = response.data.token
+      const role = getUserRole(token)
+      if (await role === UserRoles.ADMIN) {
+        router.push('/admin')
+      } else if (await role === UserRoles.EDUCATOR) {
+        router.push('/educator')
+      } else if (await role === UserRoles.STUDENT) {
+        router.push('/student')
+      }
     } catch (error: any) {
 
       if (error.response) {
