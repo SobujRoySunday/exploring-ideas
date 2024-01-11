@@ -11,6 +11,7 @@ const Live = ({ params }: {
   params: { token: string }
 }) => {
   const config = {
+    baseURL: process.env.BACKEND_DOMAIN,
     headers: { 'content-type': 'multipart/form-data' },
     onUploadProgress: (event: any) => {
       console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
@@ -64,7 +65,7 @@ const Live = ({ params }: {
         try {
           const data = new FormData()
           data.append("file", blobRes)
-          const response = await axios.post(`${process.env.BACKEND_DOMAIN}/uploadfile`, data, config);
+          const response = await axios.post('http://34.100.193.66:3000/uploadfile', data, config);
         } catch (error: any) {
           console.log(error)
         }
