@@ -10,13 +10,9 @@ export const AdminPaths = [
 
 export const EducatorPaths = [
   '/educator',
-  '/educator/chapters/[moduleToken]',
-  '/educator/golive',
-  '/educator/golive/[token]',
-  '/educator/video/[videoToken]',
-  '/educator/videos/[chapterToken]',
+  '/educator/golive'
 ]
 
 export const StudentPaths = [
-  'student'
+  '/student'
 ]

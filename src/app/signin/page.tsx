@@ -22,13 +22,12 @@ export default function Signin() {
 
       setLoading(true);
       const response = await axios.post(`/api/users/login`, { email, password });
-      const token = response.data.token
-      const role = getUserRole(token)
-      if (await role === UserRoles.ADMIN) {
+      const role = response.data.role
+      if (role === UserRoles.ADMIN) {
         router.push('/admin')
-      } else if (await role === UserRoles.EDUCATOR) {
+      } else if (role === UserRoles.EDUCATOR) {
         router.push('/educator')
-      } else if (await role === UserRoles.STUDENT) {
+      } else if (role === UserRoles.STUDENT) {
         router.push('/student')
       }
     } catch (error: any) {
