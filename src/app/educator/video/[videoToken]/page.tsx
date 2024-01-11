@@ -14,7 +14,7 @@ const Video = ({ params }: {
   return (
     <main className='flex justify-center items-center p-14'>
       <video id="video" className='w-[50vw]' controls autoPlay onSeeked={handle}>
-        <source src={`http://localhost:4000/uploads/${params.videoToken}.webm`} />
+        <source src={`${process.env.BACKEND_DOMAIN}/uploads/${params.videoToken}.webm`} />
       </video>
     </main>
   )
