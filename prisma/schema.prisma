@@ -83,4 +83,6 @@ model Polls {
   videoId       String     @db.ObjectId
   videoRelation Videos     @relation(fields: [videoId], references: [id])
   timestamp     Int
+
+  @@map("polls")
 }

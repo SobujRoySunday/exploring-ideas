@@ -65,7 +65,7 @@ const Live = ({ params }: {
         try {
           const data = new FormData()
           data.append("file", blobRes)
-          const response = await axios.post('http://34.100.193.66:3000/uploadfile', data, config);
+          const response = await axios.post('http://35.200.215.197:3000/uploadfile', data, config);
         } catch (error: any) {
           console.log(error)
         }
