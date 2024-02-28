@@ -1,7 +1,6 @@
 "use client"
 
 import { convertToBase64 } from "@/helpers/convertToBase64"
-import { prisma } from "@/lib/db/prisma"
 import axios from "axios"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -33,7 +32,7 @@ const GoLive = () => {
         setChapter(`Chapter #1`)
       }
 
-      if (newModule) {
+      if (newModule && module && chapter) {
         const moduleCreateResponse = await axios.post(`/api/live/moduleCreate`, { module })
         if (moduleCreateResponse) {
           moduleId = moduleCreateResponse.data.createdModule.id;
@@ -49,6 +48,9 @@ const GoLive = () => {
         fileBase64 = await convertToBase64(file as File)
       } else {
         fileBase64 = ""
+      }
+      if (!video) {
+        setVideo("Lesson #1")
       }
       const response = await axios.post(`/api/live/create`, { video, chapterId, fileBase64 })
       const liveToken = response.data.createdVideoLog.id
@@ -67,16 +69,16 @@ const GoLive = () => {
   }, [newModule])
 
   return (
-    <div className='flex justify-center py-32'>
-      <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 min-w-[32rem]">
+    <div className='flex justify-center items-center h-screen bg-zinc-950'>
+      <div className="card shrink-0 w-full max-w-sm shadow-2xl min-w-[29rem] bg-zinc-900">
         <div className="card-body">
 
           {/* Module */}
           <div className="form-control flex flex-row items-center gap-8">
             <label className="label">
-              <span className="label-text">Create a new module?</span>
+              <span className="label-text text-zinc-300">Create a new module?</span>
             </label>
-            <div className=" flex gap-2">
+            <div className=" flex gap-2 text-zinc-300">
               Yes: <input onChange={() => { setNewModule(true) }} type="radio" className="radio radio-primary" checked={newModule} />
               No: <input onChange={() => { setNewModule(false) }} type="radio" className="radio radio-primary" checked={!newModule} />
             </div>
@@ -85,9 +87,9 @@ const GoLive = () => {
           {/* Chapters */}
           <div className="form-control flex flex-row items-center gap-8">
             <label className="label">
-              <span className="label-text">Create a new chapter?</span>
+              <span className="label-text text-zinc-300">Create a new chapter?</span>
             </label>
-            <div className=" flex gap-2">
+            <div className=" flex gap-2 text-zinc-300">
               Yes: <input onChange={() => { if (!newModule) setNewChapter(true) }} type="radio" className="radio radio-primary" checked={newChapter} />
               No: <input onChange={() => { if (!newModule) setNewChapter(false) }} type="radio" className="radio radio-primary" checked={!newChapter} />
             </div>
@@ -96,12 +98,12 @@ const GoLive = () => {
           {/* Module name */}
           <div className="form-control flex flex-row items-center gap-8">
             <label className="label">
-              <span className="label-text">Module name</span>
+              <span className="label-text text-zinc-300">Module name</span>
             </label>
             <input
               type="text"
               placeholder="module name"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-300"
               value={module}
               onChange={(e) => { setModule(e.target.value) }}
               disabled={!newModule}
@@ -112,12 +114,12 @@ const GoLive = () => {
           {/* Chapter name */}
           <div className="form-control flex flex-row items-center gap-8">
             <label className="label">
-              <span className="label-text">Chapter name</span>
+              <span className="label-text text-zinc-300">Chapter name</span>
             </label>
             <input
               type="text"
               placeholder="chapter name"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-300"
               value={chapter}
               onChange={(e) => { setChapter(e.target.value) }}
               disabled={!newChapter}
@@ -127,12 +129,12 @@ const GoLive = () => {
           {/* Video name */}
           <div className="form-control flex flex-row items-center gap-8">
             <label className="label">
-              <span className="label-text">Video name</span>
+              <span className="label-text text-zinc-300">Video name</span>
             </label>
             <input
               type="text"
               placeholder="chapter name"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-300"
               value={video}
               onChange={(e) => { setVideo(e.target.value) }}
               required />
@@ -141,11 +143,11 @@ const GoLive = () => {
           {/* PPT select */}
           <div className="form-control flex flex-row items-center gap-8">
             <label className="label">
-              <span className="label-text">Upload your presentation</span>
+              <span className="label-text text-zinc-300">Upload your presentation</span>
             </label>
             <input
               type="file"
-              className="file-input file-input-bordered file-input-warning w-full max-w-xs"
+              className="file-input file-input-bordered file-input-warning w-full max-w-xs bg-zinc-800 text-zinc-300"
               onChange={(e) => {
                 if (e.target.files)
                   setFile(e.target.files[0]);

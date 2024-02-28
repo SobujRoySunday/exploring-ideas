@@ -2,13 +2,11 @@
 
 import axios from 'axios'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React, { FormEvent, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
-  const router = useRouter()
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,10 +26,10 @@ const Signup = () => {
         toast.error(error.response.data);
       } else if (error.request) {
         console.log(error.request);
-        toast.error(error.request);
+        toast.error(`Some error occurred`);
       } else {
         console.log('Error', error.message);
-        toast.error(`Error ${error.message}`);
+        toast.error(`Some error occurred`);
       }
 
     } finally {
@@ -40,19 +38,30 @@ const Signup = () => {
   }
 
   return (
-    <div className='flex justify-center py-32'>
-      <ToastContainer />
-      <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    <div className='flex justify-center items-center h-screen bg-zinc-950'>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-zinc-900">
         <form className="card-body" onSubmit={submit}>
           {/* Name */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Your name</span>
+              <span className="label-text text-zinc-400">Your name</span>
             </label>
             <input
               type="text"
               placeholder="name"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-400"
               value={name}
               onChange={(e) => { setName(e.target.value) }}
               required
@@ -62,12 +71,12 @@ const Signup = () => {
           {/* Email */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Email</span>
+              <span className="label-text text-zinc-400">Email</span>
             </label>
             <input
               type="email"
               placeholder="email"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-400"
               value={email}
               onChange={(e) => { setEmail(e.target.value) }}
               required
@@ -77,12 +86,12 @@ const Signup = () => {
           {/* Password */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Password</span>
+              <span className="label-text text-zinc-400">Password</span>
             </label>
             <input
               type="password"
               placeholder="password"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-400"
               value={password}
               onChange={(e) => { setPassword(e.target.value) }}
               required
@@ -92,12 +101,12 @@ const Signup = () => {
           {/* Retype Password */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Retype Password</span>
+              <span className="label-text text-zinc-400">Retype Password</span>
             </label>
             <input
               type="password"
               placeholder="retype password"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-400"
               value={retypePassword}
               onChange={(e) => { setRetypePassword(e.target.value) }}
               required
@@ -113,8 +122,8 @@ const Signup = () => {
               }
             </button>
           </div>
-          <label className="label justify-center">
-            <Link href="/signin" className="label-text-alt link link-hover">Already have an account?</Link>
+          <label className="flex justify-center">
+            <Link href="/signin" className="text-xs text-zinc-400 hover:text-zinc-500">Already have an account?</Link>
           </label>
         </form>
       </div>

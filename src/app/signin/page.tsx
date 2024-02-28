@@ -35,10 +35,10 @@ export default function Signin() {
         toast.error(error.response.data);
       } else if (error.request) {
         console.log(error.request);
-        toast.error(error.request);
+        toast.error('Some error occurred');
       } else {
         console.log('Error', error.message);
-        toast.error(`Error ${error.message}`);
+        toast.error('Some error occurred');
       }
 
     }
@@ -48,18 +48,29 @@ export default function Signin() {
   }
 
   return (
-    <div className='flex justify-center py-64'>
-      <ToastContainer />
-      <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    <div className='flex justify-center items-center h-screen bg-zinc-950'>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-zinc-900">
         <form onSubmit={login} className="card-body">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Email</span>
+              <span className="label-text text-zinc-400">Email</span>
             </label>
             <input
               type="email"
               placeholder="email"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-400"
               value={email}
               onChange={(e) => { setEmail(e.target.value) }}
               required
@@ -67,12 +78,12 @@ export default function Signin() {
           </div>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Password</span>
+              <span className="label-text text-zinc-400">Password</span>
             </label>
             <input
               type="password"
               placeholder="password"
-              className="input input-bordered"
+              className="input input-bordered bg-zinc-800 text-zinc-400"
               value={password}
               onChange={(e) => { setPassword(e.target.value) }}
               required
@@ -86,8 +97,8 @@ export default function Signin() {
               }
             </button>
           </div>
-          <label className="label justify-center">
-            <Link href="/signup" className="label-text-alt link link-hover">Create new account</Link>
+          <label className="flex justify-center">
+            <Link href="/signup" className="text-xs text-zinc-400 hover:text-zinc-500">Create new account</Link>
           </label>
         </form>
       </div>

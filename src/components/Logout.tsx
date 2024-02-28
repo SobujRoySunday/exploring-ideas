@@ -1,3 +1,5 @@
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -10,8 +12,10 @@ const Logout = () => {
   }
 
   return (
-    <form action={logoutSession}>
-      <button type='submit' className='btn btn-error'>Logout</button>
+    <form action={logoutSession} title='Logout'>
+      <button type='submit' className='btn btn-circle btn-error text-xs'>
+        <FontAwesomeIcon className='w-5' icon={faRightFromBracket} />
+      </button>
     </form>
   )
 }

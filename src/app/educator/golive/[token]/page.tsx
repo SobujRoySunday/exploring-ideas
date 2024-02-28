@@ -27,6 +27,9 @@ const Live = ({ params }: {
 
   const webcamStream = useRef<MediaStream>()
   const screenStream = useRef<MediaStream>()
+  // combined stream is the final video output
+  // this needs to be converted into base64 and
+  // sent to the backend server with video ID
   const combinedStream = useRef<MediaStream>()
 
   const recordedChunks = useRef<BlobPart[]>([]);
@@ -65,7 +68,7 @@ const Live = ({ params }: {
         try {
           const data = new FormData()
           data.append("file", blobRes)
-          const response = await axios.post('http://35.200.215.197:3000/uploadfile', data, config);
+          const response = await axios.post('http://localhost:4000/uploadfile', data, config);
         } catch (error: any) {
           console.log(error)
         }
@@ -138,7 +141,7 @@ const Live = ({ params }: {
 
   return (
     <>
-      <div className="flex flex-col w-full justify-center items-center py-2">
+      <div className="flex flex-col w-full justify-center items-center">
         <div className="flex flex-row gap-10 justify-center items-center">
           {webcam &&
             <div>
